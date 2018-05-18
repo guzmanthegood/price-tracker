@@ -8,7 +8,7 @@ var logger = logrus.New()
 
 func init() {
 	logger.Formatter = &logrus.TextFormatter{ForceColors: true}
-	logger.SetLevel(logrus.InfoLevel)
+	logger.SetLevel(logrus.DebugLevel)
 }
 
 // Info wrap
