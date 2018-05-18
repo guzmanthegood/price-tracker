@@ -15,7 +15,7 @@ const DefaultDateFormat = "02/01/2006"
 
 // LoadAvailabilityPrices load prices in DB from flights availability page
 func LoadAvailabilityPrices(o, d string, d1, d2 time.Time) error {
-	logger.Info(fmt.Sprintf("Request -> Origin[%v] Destination[%v] DateRange[%v]..[%v]", o, d, d1.Format(DefaultDateFormat), d2.Format(DefaultDateFormat)))
+	logger.Info(fmt.Sprintf("LoadAvailabilityPrices -> Origin[%v] Destination[%v] DateRange[%v]..[%v]", o, d, d1.Format(DefaultDateFormat), d2.Format(DefaultDateFormat)))
 
 	// New colly collector every iteration
 	c := newCollyCollector()
@@ -41,31 +41,54 @@ func LoadAvailabilityPrices(o, d string, d1, d2 time.Time) error {
 
 	// Next lvl of recursion
 	if diffDays(d1, d2) > 0 {
-		url := getAvailabilityURL(o, d, d1)
-		logger.Debug("Visit -> ", url)
+		idCache := getAvailabilityCacheID(o, d, d1)
+		url := getFilteredAvailabilityURL(o, d, d1, idCache)
+		logger.Info("Url Cache -> ", url)
 		c.Visit(url)
+
 		LoadAvailabilityPrices(o, d, d1.AddDate(0, 0, 1), d2)
 	}
 
 	return nil
 }
 
+// getAvailabilityCacheID get cache id from availability page
+func getAvailabilityCacheID(o, d string, d1 time.Time) string {
+	logger.Info(fmt.Sprintf("getAvailabilityCacheID -> Origin[%v] Destination[%v] Date[%v]", o, d, d1.Format(DefaultDateFormat)))
+
+	// New colly collector every iteration
+	c := newCollyCollector()
+
+	var idCache string
+	c.OnHTML("form#continue input[name=idCache]", func(e *colly.HTMLElement) {
+		idCache, _ = e.DOM.Attr("value")
+		logger.Debug(fmt.Sprintf("idCache[%v]", idCache))
+	})
+
+	url := getAvailabilityURL(o, d, d1)
+	c.Visit(url)
+
+	return idCache
+}
+
 // newCollyCollector http config
 func newCollyCollector() *colly.Collector {
 	c := colly.NewCollector()
 
-	c.WithTransport(&http.Transport{
-		Proxy: http.ProxyFromEnvironment,
-		DialContext: (&net.Dialer{
-			Timeout:   60 * time.Second,
-			KeepAlive: 60 * time.Second,
-			DualStack: true,
-		}).DialContext,
-		MaxIdleConns:          100,
-		IdleConnTimeout:       120 * time.Second,
-		TLSHandshakeTimeout:   20 * time.Second,
-		ExpectContinueTimeout: 2 * time.Second,
-	})
+	c.WithTransport(
+
+		&http.Transport{
+			Proxy: http.ProxyFromEnvironment,
+			DialContext: (&net.Dialer{
+				Timeout:   60 * time.Second,
+				KeepAlive: 60 * time.Second,
+				DualStack: true,
+			}).DialContext,
+			MaxIdleConns:          100,
+			IdleConnTimeout:       120 * time.Second,
+			TLSHandshakeTimeout:   20 * time.Second,
+			ExpectContinueTimeout: 2 * time.Second,
+		})
 
 	return c
 }
