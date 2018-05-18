@@ -24,7 +24,7 @@ func LoadAvailabilityPrices(o, d string, d1, d2 time.Time) error {
 	var count int
 
 	// Callbacks span price on availability
-	c.OnHTML("div#resultadosDispoVuelos ul.flights-list li.selectFlightOptionTrigger", func(e *colly.HTMLElement) {
+	c.OnHTML(".selectFlightOptionTrigger", func(e *colly.HTMLElement) {
 		pr, _ := e.DOM.Attr("data-provider")
 		fn, _ := e.DOM.Attr("data-number")
 		va := e.DOM.Find("div.flight-price span.precioMedio span.price").Text()
