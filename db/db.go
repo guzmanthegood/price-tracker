@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"price-tracker/logger"
 
+	// Postgres driver
 	_ "github.com/lib/pq"
 )
 

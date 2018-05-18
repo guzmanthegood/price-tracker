@@ -1,14 +1,12 @@
 package main
 
 import (
-	"price-tracker/db"
 	"price-tracker/logger"
 	"price-tracker/scraper"
 	"time"
 )
 
 func init() {
-	db.InitDB()
 }
 
 func main() {

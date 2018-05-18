@@ -50,6 +50,7 @@ func LoadAvailabilityPrices(o, d string, d1, d2 time.Time) error {
 	return nil
 }
 
+// newCollyCollector http config
 func newCollyCollector() *colly.Collector {
 	c := colly.NewCollector()
 
