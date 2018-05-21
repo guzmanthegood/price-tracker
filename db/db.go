@@ -21,4 +21,6 @@ func InitDB() {
 	if err = db.Ping(); err != nil {
 		logger.Panic(err)
 	}
+
+	defer db.Close()
 }
