@@ -7,9 +7,6 @@ import (
 	"time"
 )
 
-func init() {
-}
-
 func main() {
 	logger.Info("====== Price-Tracker application Start ======")
 	logger.Info("args: ", os.Args[1:])
