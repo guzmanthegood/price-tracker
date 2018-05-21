@@ -46,11 +46,11 @@ func DeleteOldPrices(o, d string, d1, d2 time.Time) {
 }
 
 // InsertPrice add row to Price db table
-func InsertPrice(price float64, cia, flight, o, d string, d1 time.Time) {
-	sqlQuery := `INSERT INTO price(amount, cia, flight_number, origin, destination, departure, comeback, oneway, created_at) 
-	VALUES ($1, $2, $3, $4, $5, $6, null, true, now())`
+func InsertPrice(price float64, cia, flight, o, d string, d1 time.Time, URL string) {
+	sqlQuery := `INSERT INTO price(amount, cia, flight_number, origin, destination, departure, comeback, oneway, created_at, url) 
+	VALUES ($1, $2, $3, $4, $5, $6, null, true, now(), $7)`
 
-	_, err := db.Exec(sqlQuery, price, cia, flight, o, d, d1.Format("02/01/2006"))
+	_, err := db.Exec(sqlQuery, price, cia, flight, o, d, d1.Format("02/01/2006"), URL)
 	if err != nil {
 		panic(err)
 	}
