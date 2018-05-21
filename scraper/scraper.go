@@ -41,7 +41,7 @@ func LoadAvailabilityPrices(o, d string, d1, d2 time.Time) error {
 			o, d, d1.Format(DefaultDateFormat), pr, fn, va))
 
 		// Insert price in database
-		db.InsertPrice(va, pr, fn, o, d, d1)
+		db.InsertPrice(va, pr, fn, o, d, d1, getAvailabilityURL(o, d, d1))
 
 		count++
 	})

@@ -8,5 +8,6 @@ CREATE TABLE price (
     departure       date            		,
     comeback        date            		,
 	oneway			bool			NOT NULL,
-    created_at      datetime        NOT NULL
+    created_at      datetime        NOT NULL,
+    url             text
 );
