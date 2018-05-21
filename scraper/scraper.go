@@ -47,7 +47,11 @@ func LoadAvailabilityPrices(o, d string, d1, d2 time.Time) error {
 	})
 
 	c.OnScraped(func(r *colly.Response) {
-		logger.Info(fmt.Sprintf("Result -> Origin[%v] Destination[%v] Date[%v] PricesFound[%v]", o, d, d1.Format(DefaultDateFormat), count))
+		if count > 0 {
+			logger.Info(fmt.Sprintf("Result -> Origin[%v] Destination[%v] Date[%v] PricesFound[%v]", o, d, d1.Format(DefaultDateFormat), count))
+		} else {
+			logger.Warn(fmt.Sprintf("Result -> Origin[%v] Destination[%v] Date[%v] PricesFound[%v]", o, d, d1.Format(DefaultDateFormat), count))
+		}
 	})
 
 	// Next lvl of recursion
