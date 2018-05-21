@@ -2,18 +2,29 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"price-tracker/logger"
 
 	// Postgres driver
 	_ "github.com/lib/pq"
 )
 
+// DB Settings
+const (
+	dbHost = "localhost"
+	dbPort = 5432
+	dbUser = "cguzman"
+	dbPass = "cguzman"
+	dbName = "price_tracker"
+)
+
 var db *sql.DB
 
 // InitDB Instantiate DB
 func InitDB() {
-	var err error
-	db, err := sql.Open("postgres", "user=cguzman password=cguzman dbname=price_tracker sslmode=disable")
+	dbInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", dbHost, dbPort, dbUser, dbPass, dbName)
+
+	db, err := sql.Open("postgres", dbInfo)
 	if err != nil {
 		logger.Panic(err)
 	}
