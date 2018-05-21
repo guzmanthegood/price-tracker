@@ -22,6 +22,9 @@ func LoadAvailabilityPrices(o, d string, d1, d2 time.Time) error {
 	// Init database
 	db.InitDB()
 
+	// Clear old results
+	db.DeleteOldPrices(o, d, d1, d2)
+
 	// New colly collector every iteration
 	c := newCollyCollector()
 
@@ -48,7 +51,7 @@ func LoadAvailabilityPrices(o, d string, d1, d2 time.Time) error {
 	})
 
 	// Next lvl of recursion
-	if diffDays(d1, d2) > 0 {
+	if diffDays(d1, d2) >= 0 {
 		idCache := getAvailabilityCacheID(o, d, d1)
 		url := getFilteredAvailabilityURL(o, d, d1, idCache)
 		c.Visit(url)
@@ -85,8 +88,8 @@ func newCollyCollector() *colly.Collector {
 		&http.Transport{
 			Proxy: http.ProxyFromEnvironment,
 			DialContext: (&net.Dialer{
-				Timeout:   40 * time.Second,
-				KeepAlive: 40 * time.Second,
+				Timeout:   60 * time.Second,
+				KeepAlive: 60 * time.Second,
 				DualStack: true,
 			}).DialContext,
 			MaxIdleConns:          100,
