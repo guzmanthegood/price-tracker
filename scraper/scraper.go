@@ -80,12 +80,12 @@ func newCollyCollector() *colly.Collector {
 		&http.Transport{
 			Proxy: http.ProxyFromEnvironment,
 			DialContext: (&net.Dialer{
-				Timeout:   60 * time.Second,
-				KeepAlive: 60 * time.Second,
+				Timeout:   40 * time.Second,
+				KeepAlive: 40 * time.Second,
 				DualStack: true,
 			}).DialContext,
 			MaxIdleConns:          100,
-			IdleConnTimeout:       120 * time.Second,
+			IdleConnTimeout:       100 * time.Second,
 			TLSHandshakeTimeout:   20 * time.Second,
 			ExpectContinueTimeout: 2 * time.Second,
 		})
