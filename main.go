@@ -19,6 +19,8 @@ func main() {
 	d1, _ := time.Parse(scraper.DefaultDateFormat, args[2])
 	d2, _ := time.Parse(scraper.DefaultDateFormat, args[3])
 
+	logger.Warn("args[d1] ", d1, " args[d2] ", d2)
+
 	scraper.LoadAvailabilityPrices(origin, destination, d1, d2)
 
 	logger.Info("===== Price-Tracker application End   ======")
