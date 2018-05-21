@@ -7,15 +7,12 @@ import (
 	"time"
 )
 
-func init() {
-}
-
 func main() {
-	logger.Info("====== price-Tracker application Start ======")
+	logger.Info("====== Price-Tracker application Start ======")
 	logger.Info("args: ", os.Args[1:])
 	args := os.Args[1:]
 
-	// Params Hardcode | TODO: take params from terminal
+	// Command line params: [Origin][Destination][Date1][Date2]
 	origin := args[0]
 	destination := args[1]
 
@@ -24,5 +21,5 @@ func main() {
 
 	scraper.LoadAvailabilityPrices(origin, destination, d1, d2)
 
-	logger.Info("===== price-Tracker application End   ======")
+	logger.Info("===== Price-Tracker application End   ======")
 }
